@@ -73,7 +73,7 @@ You will need to provide detailed documentation of your API endpoints including 
 
 ### Documentation Example
 
-`GET '/api/v1.0/categories'`
+`GET '/categories'`
 
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
@@ -90,6 +90,132 @@ You will need to provide detailed documentation of your API endpoints including 
 }
 ```
 
+`GET '/questions?page=<page_number>'`
+
+- Fetches all questions and separates them into multiple pages, if the number of questions exceeds 10
+- Request Arguments (optional): page:int
+- Response body: 
+
+```json 
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "current_category": null,
+  "questions": [
+    {
+      "id": 1,
+      "category": 5,
+      "difficulty": 4,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination in 1996?",
+      "answer": "Tom Cruise"
+    }
+  ],
+  "success": true,
+  "total_questions": 44
+}
+```
+
+`DELETE '/questions/<int:question_id>'`
+
+- Removes a question from the pool of available questions
+- Request Arguments: question_id:int
+- Response body:
+
+``` json
+{
+  "deleted": 1,
+  "success": true
+}
+```
+
+`POST '/questions'`
+
+- Add a new question to the pool of available questions
+- Request Argument: 
+```json
+{
+  "question": "string",
+  "answer": "string",
+  "difficulty": "int",
+  "category": "int"
+}
+```
+- Reponse body:
+
+```json
+{
+  "created": 100,
+  "success": true
+}
+```
+
+`POST '/questions'`
+
+- Search the pool of available questions for a user requested word
+- Request Argument: 
+```json
+{
+  "searchTerm": "string"
+}
+```
+- Reponse body:
+
+```json
+{
+  "created": 100,
+  "success": true
+}
+```
+
+`GET '/categories/<int:category_id>/questions?page=<page_id>'`
+
+- Returns paginated list fo questions based on the user's requested category
+- Request Arguments:
+  - category_id:int
+  - (optional) page_id:int
+- Response Body:
+```json
+{
+  "current_category": 1,
+  "questions": [
+    {
+      "answer": "The Liver",
+      "category": 1,
+      "difficulty": 4,
+      "id": 20,
+      "question": "What is the heaviest organ in the human body?"
+    },
+  ],
+  "success": true,
+  "total_questions": 3
+}
+```
+
+`POST '/quizzes'`
+
+- Starts a new game
+- Required Arguments: 
+```json
+{
+  "previous_questions": [],
+  "quiz_category": "int"
+}
+```
+- Reponse Body:
+```json
+{
+  "success": true,
+  "questions": "What is the heaviest organ in the human body?"
+}
+```
+
+```
 ## Testing
 
 Write at least one test for the success and at least one error behavior of each endpoint using the unittest library.
