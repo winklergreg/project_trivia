@@ -13,6 +13,7 @@ class QuizView extends Component {
       showAnswer: false,
       categories: {},
       numCorrect: 0,
+      totalQuestions: 0,
       currentQuestion: {},
       guess: '',
       forceEnd: false,
@@ -83,6 +84,7 @@ class QuizView extends Component {
     let evaluate = this.evaluateAnswer();
     this.setState({
       numCorrect: !evaluate ? this.state.numCorrect : this.state.numCorrect + 1,
+      totalQuestions: this.state.totalQuestions + 1,
       showAnswer: true,
     });
   };
@@ -93,6 +95,7 @@ class QuizView extends Component {
       previousQuestions: [],
       showAnswer: false,
       numCorrect: 0,
+      totalQuestions: 0,
       currentQuestion: {},
       guess: '',
       forceEnd: false,
@@ -127,10 +130,13 @@ class QuizView extends Component {
   }
 
   renderFinalScore() {
+    let resultOutput = `Your Final Score is ${this.state.numCorrect} ` +
+      `out of ${this.state.totalQuestions} or ` +
+      `${this.state.numCorrect / this.state.totalQuestions * 100}%`
     return (
       <div className='quiz-play-holder'>
         <div className='final-header'>
-          Your Final Score is {this.state.numCorrect}
+          {resultOutput}
         </div>
         <div className='play-again button' onClick={this.restartGame}>
           Play Again?
