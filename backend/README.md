@@ -137,7 +137,7 @@ You will need to provide detailed documentation of your API endpoints including 
 `POST '/questions'`
 
 - Add a new question to the pool of available questions
-- Request Argument: 
+- Request Body: 
 ```json
 {
   "question": "string",
@@ -158,7 +158,7 @@ You will need to provide detailed documentation of your API endpoints including 
 `POST '/questions'`
 
 - Search the pool of available questions for a user requested word
-- Request Argument: 
+- Request Body: 
 ```json
 {
   "searchTerm": "string"
@@ -204,7 +204,10 @@ You will need to provide detailed documentation of your API endpoints including 
 ```json
 {
   "previous_questions": [],
-  "quiz_category": "int"
+  "quiz_category": {
+    "id": "int", 
+    "type": "string"
+    }
 }
 ```
 - Reponse Body:
