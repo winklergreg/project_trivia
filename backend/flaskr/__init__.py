@@ -44,10 +44,13 @@ def create_app(test_config=None):
             "Access-Control-Allow-Headers", "Content-Type,Authorization,true"
         )
         response.headers.add(
-             "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"
+            "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"
         )
         return response
 
+    ###################################################################
+    ######                     Endpoint Routes                   ######
+    ###################################################################
     @app.route('/categories')
     def retrieve_categories():
         categories = Category.query.order_by(Category.type).all()
@@ -99,9 +102,9 @@ def create_app(test_config=None):
         new_category = body.get('category', None)
         new_difficulty = body.get('difficulty', None)
         search = body.get('searchTerm', None)
-
-        try:
-            if 'searchTerm' in body:
+        
+        if 'searchTerm' in body:
+            try:
                 if not search:
                     selection = Question.query.order_by(Question.id).all()
                 else:      
@@ -116,7 +119,10 @@ def create_app(test_config=None):
                     'total_questions': len(selection),
                     'current_category': None
                 })
-            else:
+            except:
+                abort(404)
+        elif 'question' in body:
+            try:
                 question = Question(
                     question=new_question, 
                     answer=new_answer, 
@@ -132,8 +138,10 @@ def create_app(test_config=None):
                     'success': True,
                     'created': question.id
                 })
-        except:
-            abort(404)
+            except:
+                abort(404)
+        else:
+            abort(400)
 
     @app.route('/categories/<int:category_id>/questions')
     def get_questions_by_category(category_id):
@@ -185,6 +193,10 @@ def create_app(test_config=None):
         except:
             abort(400)
 
+
+    ###################################################################
+    ######                      ERROR HANDLING                   ######
+    ###################################################################
     @app.errorhandler(400)
     def bad_request(error):
         return(
